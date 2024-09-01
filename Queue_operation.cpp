@@ -1,130 +1,131 @@
-#include<iostream>
-#define MAXSIZE 200
+#include <iostream>
+#define MAXSIZE 100
+
 using namespace std;
 
-class Queue{
-	private:
-		int queue[MAXSIZE];
-	    int front;
-		int rear;
-		
-	public:
-		Queue(){
-			front=0;
-			rear=0;
-		}
-		
-		void insert();
-		void del();
-		void display();
-		void tople();
-		int size();
-		bool isEmpty();
-		void clear();
-		
-		
-};
-//enqueue()
-void Queue::insert(){  
-    int value;
-	if(rear==MAXSIZE){
-		cout<<"Queue is full"<<endl;
-		
-	}else{
-		cout << "Enter the value to insert: ";
-        cin>>value;
-		rear++;
-		queue[rear]=value;
-		cout<<value<<" is added"<<endl;
-	}
-}
+class Queue {
+private:
+    int queue[MAXSIZE];
+    int front;
+    int rear;
 
-void Queue::del(){     //dequeue
-  	if(front==rear){
-		cout<<"Queue is empty"<<endl;
-		
-	}else{
-		front++;
-		cout <<"Element deleted by deleted function is"<<queue[front]<<endl;
-	}
-}
-
-void Queue::display(){
-	if(rear==front){
-		cout<<"Queue id empty"<<endl;
-		
-	}else{
-		cout<<"The queue elemtnts are: ";
-		for(int i=front+1;i<=rear;i++){
-			cout<<queue[i]<<" ";
-		}
-		cout<<endl;
-	}
-}
-void Queue::tople(){
-	if(rear==front){
-		cout<<"Queue id empty"<<endl;
-		
-	}
-	else {
-        cout << "TOP ELEMENT OF THE QUEUE: " << queue[rear] << endl;
+public:
+    Queue() {
+        front = -1;
+        rear = -1;
     }
-		
+
+    void enqueue(int value);
+    void dequeue();
+    void display();
+    int size();
+    bool isEmpty();
+    void clear();
+};
+
+void Queue::enqueue(int value) {
+    if (rear == MAXSIZE - 1) {
+        cout << "QUEUE IS FULL" << endl;
+    } else {
+        if (front == -1) {
+            front = 0;
+        }
+        rear++;
+        queue[rear] = value;
+        cout << value << " HAS BEEN ADDED TO THE QUEUE" << endl;
+    }
 }
+
+void Queue::dequeue() {
+    if (front == -1 || front > rear) {
+        cout << "QUEUE IS EMPTY" << endl;
+    } else {
+        cout << "ELEMENT " << queue[front] << " DELETED FROM THE QUEUE" << endl;
+        front++;
+        if (front > rear) {
+            front = rear = -1;  // Reset the queue if it becomes empty
+        }
+    }
+}
+
+void Queue::display() {
+    if (front == -1) {
+        cout << "QUEUE IS EMPTY" << endl;
+    } else {
+        cout << "THE QUEUE ELEMENTS ARE: ";
+        for (int i = front; i <= rear; i++) {
+            cout << queue[i] << " ";
+        }
+        cout << endl;
+    }
+}
+
 int Queue::size() {
-    return rear-front;
+    if (front == -1) {
+        return 0;
+    } else {
+        return rear - front + 1;
+    }
 }
 
 bool Queue::isEmpty() {
-    return front == rear;
+    return (front == -1);
 }
+
 void Queue::clear() {
-    front = 0;
-    rear = 0;
-    cout << "QUEUE IS CLEARED" << endl;
+    front = -1;
+    rear = -1;
+    cout << "QUEUE HAS BEEN CLEARED" << endl;
 }
-int main(){
-	Queue q;
-	int ch,value;
-	do {
+
+int main() {
+    Queue q;
+    int choice, value;
+
+    do {
         cout << "\nQUEUE OPERATIONS";
-        cout << "\n1. INSERT ITEM";
-        cout << "\n2. DELETE ITEM";
-        cout << "\n3. DISPLAY ITEM";
-        cout << "\n4. TOP ELEMENT OF QUEUE";
-        cout << "\n5. SIZE OF QUEUE";
-        cout << "\n6. CHECK QUEUE IS EMPTY OR NOT";
-        cout << "\n7. CLEAR QUEUE";
-        cout << "\n8. EXIT";
+        cout << "\n1. ENQUEUE";
+        cout << "\n2. DEQUEUE";
+        cout << "\n3. DISPLAY";
+        cout << "\n4. SIZE OF QUEUE";
+        cout << "\n5. CHECK IF QUEUE IS EMPTY";
+        cout << "\n6. CLEAR QUEUE";
+        cout << "\n7. EXIT";
         cout << "\nENTER YOUR CHOICE: ";
-        cin >> ch;
-        switch (ch) {
-            case 1:q.insert();
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "ENTER THE VALUE TO ENQUEUE: ";
+                cin >> value;
+                q.enqueue(value);
                 break;
-            case 2:q.del();
+            case 2:
+                q.dequeue();
                 break;
-            case 3:q.display();
+            case 3:
+                q.display();
                 break;
-            case 4:q.tople();
+            case 4:
+                cout << "QUEUE SIZE: " << q.size() << endl;
                 break;
-            case 5:cout << "TThe queue size : " << q.size() << endl;
-                break;
-            case 6:if (q.isEmpty()) {
-                    cout << "Queue is empty" << endl;
+            case 5:
+                if (q.isEmpty()) {
+                    cout << "QUEUE IS EMPTY" << endl;
                 } else {
-                    cout << "Queue is not empty" << endl;
+                    cout << "QUEUE IS NOT EMPTY" << endl;
                 }
                 break;
-            case 7: q.clear();
+            case 6:
+                q.clear();
                 break;
-            case 8:cout << "EXITING..." << endl;
+            case 7:
+                cout << "EXITING..." << endl;
                 break;
             default:
-                cout << "Enter a value between 1 and 8" << endl;
+                cout << "PLEASE ENTER A VALID CHOICE (1-7)" << endl;
         }
-        
-	}while(ch!=8);
-	return 0;
+    } while (choice != 7);
+
+    return 0;
 }
-
-
